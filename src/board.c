@@ -13,6 +13,7 @@ struct Board * new_board(int height, int width) {
 			struct Square * sq = get_square(board, r, c);
 			sq->c = c;
 			sq->r = r;
+			sq->data = NULL;
 		}
 	}
 
