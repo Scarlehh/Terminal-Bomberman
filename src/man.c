@@ -2,12 +2,17 @@
 #include "board.h"
 #include <stdlib.h>
 
-struct Man* new_man(int r, int c) {
+struct Man* new_man(int r, int c, struct Board* board) {
 	struct Man* this = malloc(sizeof(struct Man));
 	this->r = r;
 	this->c = c;
 	this->display = 'M';
 	this->hasBomb = 0;
+
+	struct Square* sq = get_square(board, r, c);
+	sq->type = PLAYER;
+	sq->display = this->display;
+	sq->data = this;
 	return this;
 }
 
@@ -36,19 +41,19 @@ void move_man(struct Man* this, struct Board* board, int newr, int newc) {
 }
 
 void man_up(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r--, this->c);
+	move_man(this, board, this->r-1, this->c);
 }
 
 void man_down(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r++, this->c);
+	move_man(this, board, this->r+1, this->c);
 }
 
 void man_left(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r, this->c--);
+	move_man(this, board, this->r, this->c-1);
 }
 
 void man_right(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r, this->c++);
+	move_man(this, board, this->r, this->c+1);
 }
 
 void get_bomb(struct Man* this) {
