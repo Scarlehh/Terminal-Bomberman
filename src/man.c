@@ -1,5 +1,6 @@
 #include "man.h"
 #include "board.h"
+#include "bomb.h"
 #include <stdlib.h>
 
 struct Man* new_man(int r, int c) {
@@ -8,6 +9,7 @@ struct Man* new_man(int r, int c) {
 	this->c = c;
 	this->display = 'M';
 	this->hasBomb = 0;
+	init_bomb(&this->bomb);
 	return this;
 }
 

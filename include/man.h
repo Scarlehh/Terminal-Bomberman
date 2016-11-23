@@ -2,10 +2,12 @@
 #define MAN_H
 
 #include "board.h"
+#include "bomb.h"
 
 struct Man {
 	int r, c;
 	int hasBomb;
+	struct Bomb bomb;
 	char display;
 };
 
