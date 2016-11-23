@@ -7,7 +7,7 @@
 struct Man {
 	int r, c;
 	int dR, dC;
-	int hasBomb;
+	int hasBomb, isDead;
 	struct Bomb bomb;
 	char display;
 };
@@ -19,5 +19,6 @@ void man_down(struct Man* this, struct Board* board);
 void man_left(struct Man* this, struct Board* board);
 void man_right(struct Man* this, struct Board* board);
 void get_bomb(struct Man* this);
+void kill_man(struct Man* this, struct Board* board);
 
 #endif

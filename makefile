@@ -1,6 +1,6 @@
 # Compiler
 CC=gcc
-CFLAGS=-lncursesw -I $(LIBS)
+CFLAGS=-lncursesw -pthread -I $(LIBS)
 
 MKBIN = mkdir $(BIN)
 MKBUILD = mkdir $(BUILD)
@@ -19,7 +19,9 @@ DEPS = $(patsubst %,$(LIBS)%,$(_DEPS))
 _OBJ=\
 	main.o \
 	man.o \
-	board.o
+	board.o \
+	bomb.o \
+	physics.o
 OBJ = $(patsubst %,$(BUILD)%,$(_OBJ))
 
 MAIN = main
