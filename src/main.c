@@ -5,8 +5,8 @@
 #include "man.h"
 #include "physics.h"
 
-const int WIDTH = 20;
-const int HEIGHT = 20;
+const int WIDTH = 21;
+const int HEIGHT = 21;
 const int DELAY = 100;
 
 void init();
@@ -17,6 +17,7 @@ void destroy_window(WINDOW *local_win);
 int main() {
 	struct Board* board = new_board(HEIGHT, WIDTH);
 	clear_board(board);
+	generate_walls(board);
 	start_physics(board);
 	
 	init();
@@ -24,7 +25,8 @@ int main() {
 	WINDOW* window = create_window(HEIGHT+2, WIDTH+2, 0, 0, 1);
 	timeout(DELAY);
 
-	struct Man* p1 = new_man(1, 1, board);
+	struct Man* p1 = new_man(0, 0, board);
+	struct Man* p2 = new_man(0, WIDTH-1, board);
 	
 	int ch = '\0';
 	struct Square* sq = NULL;
@@ -41,6 +43,25 @@ int main() {
 			break;
 		case KEY_LEFT:
 			man_left(p1);
+			break;
+		case '\n':
+			get_bomb(p1);
+			break;
+			
+		case 's':
+			man_down(p2);
+			break;
+		case 'w':
+			man_up(p2);
+			break;
+		case 'd':
+			man_right(p2);
+			break;
+		case 'a':
+			man_left(p2);
+			break;
+		case ' ':
+			get_bomb(p2);
 			break;
 		}
 		
@@ -60,6 +81,7 @@ int main() {
 	} while((ch = getch()) != 'q');
 
 	delete_man(p1);
+	delete_man(p2);
 	
 	destroy_window(window);
 	endwin();
