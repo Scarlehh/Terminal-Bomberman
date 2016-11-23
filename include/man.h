@@ -5,6 +5,7 @@
 
 struct Man {
 	int r, c;
+	int hasBomb;
 	char display;
 };
 
@@ -14,5 +15,6 @@ void man_up(struct Man* this, struct Board* board);
 void man_down(struct Man* this, struct Board* board);
 void man_left(struct Man* this, struct Board* board);
 void man_left(struct Man* this, struct Board* board);
+void get_bomb(struct Man* this);
 
 #endif

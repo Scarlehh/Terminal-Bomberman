@@ -7,6 +7,7 @@ struct Man* new_man(int r, int c) {
 	this->r = r;
 	this->c = c;
 	this->display = 'M';
+	this->hasBomb = 0;
 	return this;
 }
 
@@ -14,55 +15,42 @@ void delete_man(struct Man* this) {
 	free(this);
 }
 
-void man_up(struct Man* this, struct Board* board) {
+void move_man(struct Man* this, struct Board* board, int newr, int newc) {
 	struct Square* sq = get_square(board, this->r, this->c);
-	sq->type = EMPTY;
-	sq->display = ' ';
+	if(this->hasBomb) {
+		sq->type = BOMB;
+		sq->display = '@';
+		sq->data = 0;
+		this->hasBomb = 0;
+	} else {
+		sq->type = EMPTY;
+		sq->display = ' ';
+	}
 
-	// Update position
-	this->r--;
-
-	sq = get_square(board, this->r, this->c);
+	sq = get_square(board, newr, newc);
 	sq->type = PLAYER;
 	sq->display = this->display;
+
+	this->r = newr;
+	this->c = newc;
+}
+
+void man_up(struct Man* this, struct Board* board) {
+	move_man(this, board, this->r--, this->c);
 }
 
 void man_down(struct Man* this, struct Board* board) {
-	struct Square* sq = get_square(board, this->r, this->c);
-	sq->type = EMPTY;
-	sq->display = ' ';
-
-	// Update position
-	this->r++;
-
-	sq = get_square(board, this->r, this->c);
-	sq->type = PLAYER;
-	sq->display = this->display;
+	move_man(this, board, this->r++, this->c);
 }
 
 void man_left(struct Man* this, struct Board* board) {
-	struct Square* sq = get_square(board, this->r, this->c);
-	sq->type = EMPTY;
-	sq->display = ' ';
-
-	// Update position
-	this->c--;
-
-	sq = get_square(board, this->r, this->c);
-	sq->type = PLAYER;
-	sq->display = this->display;
+	move_man(this, board, this->r, this->c--);
 }
 
 void man_right(struct Man* this, struct Board* board) {
-	struct Square* sq = get_square(board, this->r, this->c);
-	sq->type = EMPTY;
-	sq->display = ' ';
-
-	// Update position
-	this->c++;
-
-	sq = get_square(board, this->r, this->c);
-	sq->type = PLAYER;
-	sq->display = this->display;
+	move_man(this, board, this->r, this->c++);
 }
 
+void get_bomb(struct Man* this) {
+	this->hasBomb = 1;
+}
