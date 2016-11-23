@@ -1,6 +1,6 @@
 # Compiler
 CC=gcc
-CFLAGS=-lncursesw -pthread -I $(LIBS)
+CFLAGS=-lncursesw -pthread -g -I $(LIBS)
 
 MKBIN = mkdir $(BIN)
 MKBUILD = mkdir $(BUILD)

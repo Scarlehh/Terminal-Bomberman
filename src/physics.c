@@ -24,6 +24,10 @@ int stop_physics() {
 }
 
 int valid_move(struct Board * board, struct Man * man) {
+	// Not moving
+	if(man->dR == 0 && man->dC == 0) {
+		return 0;
+	}
 	// Check if moving diagonally
 	if(man->dR != 0 && man->dC != 0) {
 		return 0;
@@ -132,9 +136,26 @@ void * physics_loop(void * arg) {
 								sq->type = BOMB;
 
 								man->hasBomb = 0;
+							} else {
+								// Replace square with empty
+								sq->type = EMPTY;
+								sq->display = ' ';
+								sq->data = NULL;
 							}
+							int newr = man->r + man->dR;
+							int newc = man->c + man->dC;
 
-							// perform move
+							// Redraw man
+							struct Square* new_sq = get_square(board, newr, newc);
+							new_sq->type = PLAYER;
+							new_sq->display = man->display;
+							new_sq->data = man;
+							
+							// Update man's position + movement
+							man->r = newr;
+							man->c = newc;
+							man->dR = 0;
+							man->dC = 0;
 						}
 						break;
 					default:
