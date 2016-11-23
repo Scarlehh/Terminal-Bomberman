@@ -17,7 +17,9 @@ DEPS = $(patsubst %,$(LIBS)%,$(_DEPS))
 
 # Object Files
 _OBJ=\
-	main.o
+	main.o \
+	man.o \
+	board.o
 OBJ = $(patsubst %,$(BUILD)%,$(_OBJ))
 
 MAIN = main
