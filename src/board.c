@@ -33,6 +33,16 @@ void clear_board(struct Board * board) {
 	}
 }
 
+void generate_walls(struct Board* board) {
+	for(int r = 1; r < board->height; r+=2) {
+		for(int c = 1; c < board->width; c+=2) {
+			struct Square* sq = get_square(board, r, c);
+			sq->type = BLOCK;
+			sq->display = '#';
+		}
+	}
+}
+
 struct Square * get_square(struct Board * board, int row, int col) {
 	return &board->board[row * board->width + col];
 }

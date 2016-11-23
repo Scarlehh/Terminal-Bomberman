@@ -18,6 +18,7 @@ struct Board {
 
 struct Board * new_board(int width, int height);
 void clear_board(struct Board * board);
+void generate_walls(struct Board* board);
 
 struct Square * get_square(struct Board * board, int row, int col);
 
