@@ -64,7 +64,7 @@ void * physics_loop(void * arg) {
 			for (int c = 0; c < width; c++) {
 				sq = get_square(board, r, c);
 				if (sq->type == MELTING) {
-					if (sq->data >= MELT_TIMER) {
+					if ((long) sq->data >= MELT_TIMER) {
 						sq->type = EMPTY;
 						sq->display = ' ';
 						sq->data = NULL;
