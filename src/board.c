@@ -37,7 +37,7 @@ void generate_walls(struct Board* board) {
 	for(int r = 1; r < board->height; r+=2) {
 		for(int c = 1; c < board->width; c+=2) {
 			struct Square* sq = get_square(board, r, c);
-			sq->type = BLOCK;
+			sq->type = BREAKABLE;
 			sq->display = '#';
 		}
 	}
