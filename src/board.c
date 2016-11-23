@@ -8,13 +8,21 @@ struct Board * new_board(int height, int width) {
 	board->width = width;
 	board->height = height;
 
+	for (int r = 0; r < board->height; r++) {
+		for (int c = 0; c < board->height; c++) {
+			struct Square * sq = get_square(board, r, c);
+			sq->c = c;
+			sq->r = r;
+		}
+	}
+
 	return board;
 }
 
 void clear_board(struct Board * board) {
 	for (int r = 0; r < board->height; r++) {
 	   for (int c = 0; c < board->width; c++) {
-			struct Square * sq = &board->board[r * board->width + c];
+			struct Square * sq = get_square(board, r, c);
 			sq->c = c;
 			sq->r = r;
 			sq->display = ' ';
