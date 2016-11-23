@@ -37,12 +37,11 @@ int valid_move(struct Board * board, struct Man * man) {
 	
 	struct Square* sq = get_square(board, newr, newc);
 	enum SquareType sq_type = sq->type;
-	if(sq_type == BOMB || sq_type == BLOCK ||
-	   sq_type == BREAKABLE || sq_type == PLAYER) {
-		return 0;
+	if(sq_type == EMPTY || sq_type == MELTING) {
+		return 1;
 	}
 	
-	return 1;
+	return 0;
 }
 
 void * physics_loop(void * arg) {
