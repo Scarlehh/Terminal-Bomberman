@@ -24,7 +24,25 @@ int stop_physics() {
 }
 
 int valid_move(struct Board * board, struct Man * man) {
-	return 0;
+	// Check if moving diagonally
+	if(man->dR != 0 && man->dC != 0) {
+		return 0;
+	}
+	int newr = man->r + man->dR;
+	int newc = man->c + man->dC;
+	if(newr < 0 || newc < 0 ||
+	   newr >= board->height || newc >= board->width) {
+		return 0;
+	}
+	
+	struct Square* sq = get_square(board, newr, newc);
+	enum SquareType sq_type = sq->type;
+	if(sq_type == BOMB || sq_type == BLOCK ||
+	   sq_type == BREAKABLE || sq_type == PLAYER) {
+		return 0;
+	}
+	
+	return 1;
 }
 
 void * physics_loop(void * arg) {
