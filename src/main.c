@@ -44,6 +44,9 @@ int main() {
 		case KEY_LEFT:
 			man_left(p1);
 			break;
+		case '\n':
+			get_bomb(p1);
+			break;
 			
 		case 's':
 			man_down(p2);
@@ -56,6 +59,9 @@ int main() {
 			break;
 		case 'a':
 			man_left(p2);
+			break;
+		case ' ':
+			get_bomb(p2);
 			break;
 		}
 		
