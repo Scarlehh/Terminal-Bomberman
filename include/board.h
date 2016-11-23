@@ -4,7 +4,7 @@
 enum SquareType { BOMB, BREAKABLE, BLOCK, PLAYER, EMPTY };
 
 struct Square {
-	int x, y;
+	int r, c;
 	char display;
 	enum SquareType type;
 	void * data;
@@ -16,6 +16,9 @@ struct Board {
 	struct Square * board;
 };
 
-struct * Board new_board(int width, int height);
+struct Board * new_board(int width, int height);
+void clear_board(struct Board * board);
+
+struct Square * get_square(struct Board * board, int row, int col);
 
 #endif
