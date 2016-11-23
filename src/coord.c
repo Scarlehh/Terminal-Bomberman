@@ -18,10 +18,10 @@ void set_coord(struct Coord* coord, int r, int c) {
 	coord->c = c;
 }
 
-int get_x(struct Coord* coord) {
+int get_r(struct Coord* coord) {
 	return coord->r;
 }
 
-int get_y(struct Coord* coord) {
+int get_c(struct Coord* coord) {
 	return coord->c;
 }
