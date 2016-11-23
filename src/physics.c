@@ -60,8 +60,12 @@ void * physics_loop(void * arg) {
 
 						// validate movement
 						if (valid_move(board, man)) {
-							if (man->hasBomb && (man->dC != 0 || man->dR != 0)) {
-								// place bomb
+							if (man->hasBomb) {
+								sq->data = clone_bomb(&man->bomb);
+								sq->display = BOMB_DISPLAY;
+								sq->type = BOMB;
+
+								man->hasBomb = 0;
 							}
 
 							// perform move
