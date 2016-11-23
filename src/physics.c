@@ -68,57 +68,38 @@ void * physics_loop(void * arg) {
 						; // for fuck's sake C
 						struct Bomb * bomb = sq->data;
 						if (bomb->timer >= BOMB_TIMER_END) {
-							int index;
-							index=0;
 							struct Square * sq1;
-							bool contChecking[] = {false, false, false, false};
-							for(int i=0; i< bomb-> strength; i++){
-								
-								if(!contChecking[index])
-									sq1 = get_square(board, r--, c);
-									if(sq1->type == BREAKABLE){
-									sq1->type = MELTING;
-									else if(sq1->type == BLOCK){contChecking[index]=true;}
-									else if(sq1->type == PLAYER){
-										struct Man* p111 = new_man(r, c, board);
-										kill_man(p111, board);
-									} 	 	
-								}
-								index++;
-								if(!contChecking[index])
-									sq1 = get_square(board, r, c--);
-									if(sq1->type == BREAKABLE){
-									sq1->type = MELTING;
-									else if(sq1->type == BLOCK){contChecking[index]=true;} 	
-									else if(sq1->type == PLAYER){
-										struct Man* p111 = new_man(r, c, board);
-										kill_man(p111, board);
-									} 	 
-								}
-								index++;								
-								if(!contChecking[index])
-									sq1 = get_square(board, r++, c);
-									if(sq1->type == BREAKABLE){
-									sq1->type = MELTING;
-									else if(sq1->type == BLOCK){contChecking[index]=true;} 	
-									else if(sq1->type == PLAYER){
-										struct Man* p111 = new_man(r, c, board);
-										kill_man(p111, board);
-									} 	 
-								}
-								index++;
-								if(!contChecking[index])
-									sq1 = get_square(board, r, c++);
-									if(sq1->type == BREAKABLE){
-									sq1->type = MELTING;
-									else if(sq1->type == BLOCK){contChecking[index]=true;} 
-									else if(sq1->type == PLAYER){
-										struct Man* p111 = new_man(r, c, board);
-										kill_man(p111, board);
-									} 	 	
-								}
-								index=0;
-							}	
+							for (int dR = 0; dR < bomb->strength && r + dR < board->width; dR++) {
+								sq1 = get_square(board, r + dR, c);
+								enum SquareType type = sq1-> type;
+								sq1->type = MELTING;
+								if (type == BREAKABLE)
+									break;
+							}
+
+							for (int dR = 1; dR < bomb->strength && r - dR >= 0; dR++) {
+								sq1 = get_square(board, r - dR, c);
+								enum SquareType type = sq1-> type;
+								sq1->type = MELTING;
+								if (type == BREAKABLE)
+									break;
+							}
+
+							for (int dC = 0; dC < bomb->strength && c + dC < board->height; dC++) {
+								sq1 = get_square(board, r, c + dC);
+								enum SquareType type = sq1-> type;
+								sq1->type = MELTING;
+								if (type == BREAKABLE)
+									break;
+							}
+
+							for (int dC = 1; dC < bomb->strength && c - dC >= 0; dC++) {
+								sq1 = get_square(board, r, c - dC);
+								enum SquareType type = sq1-> type;
+								sq1->type = MELTING;
+								if (type == BREAKABLE)
+									break;
+							}
 						} else {
 							bomb->timer++;
 						}
