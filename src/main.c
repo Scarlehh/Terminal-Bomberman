@@ -27,7 +27,7 @@ int main() {
 
 	struct Man* p1 = new_man(0, 0, board);
 	struct Man* p2 = new_man(0, WIDTH-1, board);
-	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(1, COLOR_RED, COLOR_RED);
 	init_pair(2, COLOR_GREEN, COLOR_BLACK);
 	
 	int ch = '\0';
