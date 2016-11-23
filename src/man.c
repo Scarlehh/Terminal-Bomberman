@@ -5,11 +5,17 @@
 
 struct Man* new_man(int r, int c, struct Board* board) {
 	struct Man* this = malloc(sizeof(struct Man));
+	// Initialise position
 	this->r = r;
 	this->c = c;
+	// Set movement to nothing
+	this->dR = 0;
+	this->dC = 0;
+	
 	this->display = 'M';
 	this->hasBomb = 0;
 
+	// Set attributes on square
 	struct Square* sq = get_square(board, r, c);
 	sq->type = PLAYER;
 	sq->display = this->display;
@@ -44,19 +50,23 @@ void move_man(struct Man* this, struct Board* board, int newr, int newc) {
 }
 
 void man_up(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r-1, this->c);
+	this->dR--;
+	//move_man(this, board, this->r-1, this->c);
 }
 
 void man_down(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r+1, this->c);
+	this->dR++;
+	//move_man(this, board, this->r+1, this->c);
 }
 
 void man_left(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r, this->c-1);
+	this->dC--;
+	//move_man(this, board, this->r, this->c-1);
 }
 
 void man_right(struct Man* this, struct Board* board) {
-	move_man(this, board, this->r, this->c+1);
+	this->dC++;
+	//move_man(this, board, this->r, this->c+1);
 }
 
 void get_bomb(struct Man* this) {
