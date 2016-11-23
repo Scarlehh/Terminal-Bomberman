@@ -1,4 +1,5 @@
 #include <pthread.h>
+
 #include "physics.h"
 #include "bomb.h"
 #include "man.h"
@@ -59,7 +60,21 @@ void * physics_loop(void * arg) {
 
 	while (1) {
 		nanosleep(&t, NULL);
-		// run through and update MELTING
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				sq = get_square(board, r, c);
+				if (sq->type == MELTING) {
+					if (sq->data >= MELT_TIMER) {
+						sq->type = EMPTY;
+						sq->display = ' ';
+						sq->data = NULL;
+					} else {
+						sq->data++;
+					}
+				}
+			}
+		}
+
 		for (int r = 0; r < height; r++) {
 			for (int c = 0; c < width; c++) {
 				sq = get_square(board, r, c);
