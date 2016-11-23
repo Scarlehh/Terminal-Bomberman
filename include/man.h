@@ -6,6 +6,7 @@
 
 struct Man {
 	int r, c;
+	int dR, dC;
 	int hasBomb;
 	struct Bomb bomb;
 	char display;

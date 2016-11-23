@@ -81,14 +81,13 @@ WINDOW *create_window(int height, int width, int starty, int startx, bool border
 	WINDOW *local_win;
 
 	local_win = newwin(height, width, starty, startx);
-	if(borders) {
+	if (borders) {
 		box(local_win, 0, 0);
 	}
 	wrefresh(local_win);
 
 	return local_win;
 }
-
 
 void destroy_window(WINDOW *local_win) {	
 	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');

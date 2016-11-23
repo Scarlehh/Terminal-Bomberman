@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-enum SquareType { BOMB, BREAKABLE, BLOCK, PLAYER, EMPTY };
+enum SquareType { BOMB, MELTING, BREAKABLE, BLOCK, PLAYER, EMPTY };
 
 struct Square {
 	int r, c;
