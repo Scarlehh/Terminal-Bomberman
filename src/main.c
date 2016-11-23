@@ -27,6 +27,8 @@ int main() {
 
 	struct Man* p1 = new_man(0, 0, board);
 	struct Man* p2 = new_man(0, WIDTH-1, board);
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_BLACK);
 	
 	int ch = '\0';
 	struct Square* sq = NULL;
@@ -67,11 +69,21 @@ int main() {
 		
 		for(int r = 0; r < HEIGHT; r++) {
 			for(int c = 0; c < WIDTH; c++) {
-				// Get board squarw
+				// Get board square
 				sq = get_square(board, r, c);
 				char display = sq->display;
+				if(sq->type == MELTING) {
+					wattron(window, COLOR_PAIR(1));
+				} else if(sq->type == PLAYER) {
+					wattron(window, COLOR_PAIR(2));
+				}
 				// Put into window
 				mvwaddch(window, r+1, c+1, display);
+				if(sq->type == MELTING) {
+					wattroff(window, COLOR_PAIR(1));
+				} else if(sq->type == PLAYER) {
+					wattroff(window, COLOR_PAIR(2));
+				}
 			}
 		}
 
