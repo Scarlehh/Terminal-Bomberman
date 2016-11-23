@@ -25,8 +25,8 @@ int main() {
 	WINDOW* window = create_window(HEIGHT+2, WIDTH+2, 0, 0, 1);
 	timeout(DELAY);
 
-	struct Man* p1 = new_man(0, 0, board);
-	struct Man* p2 = new_man(0, WIDTH-1, board);
+	struct Man* p1 = new_man(0, WIDTH-1, board);
+	struct Man* p2 = new_man(0, 0, board);
 	init_pair(1, COLOR_RED, COLOR_RED);
 	init_pair(2, COLOR_GREEN, COLOR_BLACK);
 	
