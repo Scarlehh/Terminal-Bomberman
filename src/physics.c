@@ -1,5 +1,4 @@
 #include <pthread.h>
-
 #include "physics.h"
 #include "bomb.h"
 #include "man.h"
@@ -105,6 +104,9 @@ void * physics_loop(void * arg) {
 							// Update man's position + movement
 							man->r = newr;
 							man->c = newc;
+							man->dR = 0;
+							man->dC = 0;
+						} else {
 							man->dR = 0;
 							man->dC = 0;
 						}
