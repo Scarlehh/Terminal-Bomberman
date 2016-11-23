@@ -3,9 +3,10 @@
 #include <ncurses.h>
 #include "board.h"
 #include "man.h"
+#include "physics.h"
 
-const int WIDTH = 50;
-const int HEIGHT = 50;
+const int WIDTH = 20;
+const int HEIGHT = 20;
 const int DELAY = 100;
 
 void init();
@@ -16,6 +17,7 @@ void destroy_window(WINDOW *local_win);
 int main() {
 	struct Board* board = new_board(HEIGHT, WIDTH);
 	clear_board(board);
+	start_physics(board);
 	
 	init();
 	refresh();
@@ -29,16 +31,16 @@ int main() {
 	do {
 		switch(ch) {
 		case KEY_DOWN:
-			man_down(p1, board);
+			man_down(p1);
 			break;
 		case KEY_UP:
-			man_up(p1, board);
+			man_up(p1);
 			break;
 		case KEY_RIGHT:
-			man_right(p1, board);
+			man_right(p1);
 			break;
 		case KEY_LEFT:
-			man_left(p1, board);
+			man_left(p1);
 			break;
 		}
 		
@@ -61,6 +63,7 @@ int main() {
 	
 	destroy_window(window);
 	endwin();
+	stop_physics();
 	clear_board(board);
 	return 0;
 }
