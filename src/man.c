@@ -14,6 +14,7 @@ struct Man* new_man(int r, int c, struct Board* board) {
 	
 	this->display = 'M';
 	this->hasBomb = 0;
+	this->isDead = 0;
 
 	// Set attributes on square
 	struct Square* sq = get_square(board, r, c);
@@ -71,4 +72,11 @@ void man_right(struct Man* this, struct Board* board) {
 
 void get_bomb(struct Man* this) {
 	this->hasBomb = 1;
+}
+
+void kill_man(struct Man* this, struct Board* board) {
+	this->isDead = 1;
+	struct Square* sq = get_square(board, this->r, this->c);
+	sq->type = EMPTY;
+	sq->display = 'X';
 }
