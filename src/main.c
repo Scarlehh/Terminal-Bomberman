@@ -87,8 +87,7 @@ int main() {
 			}
 		}
 
-		
-		
+		refresh();
 		wrefresh(window);
 	} while((ch = getch()) != 'q');
 
