@@ -19,7 +19,7 @@ int main() {
 	clear_board(board);
 	generate_walls(board);
 	start_physics(board);
-	
+
 	init();
 	refresh();
 	WINDOW* window = create_window(HEIGHT+2, WIDTH+2, 0, 0, 1);
@@ -29,7 +29,7 @@ int main() {
 	struct Man* p2 = new_man(0, 0, board);
 	init_pair(1, COLOR_RED, COLOR_RED);
 	init_pair(2, COLOR_GREEN, COLOR_BLACK);
-	
+
 	int ch = '\0';
 	struct Square* sq = NULL;
 	do {
@@ -49,7 +49,7 @@ int main() {
 		case '\n':
 			get_bomb(p1);
 			break;
-			
+
 		case 's':
 			man_down(p2);
 			break;
@@ -66,7 +66,7 @@ int main() {
 			get_bomb(p2);
 			break;
 		}
-		
+
 		for(int r = 0; r < HEIGHT; r++) {
 			for(int c = 0; c < WIDTH; c++) {
 				// Get board square
@@ -87,14 +87,14 @@ int main() {
 			}
 		}
 
-		
-		
+
+
 		wrefresh(window);
 	} while((ch = getch()) != 'q');
 
 	delete_man(p1);
 	delete_man(p2);
-	
+
 	destroy_window(window);
 	endwin();
 	stop_physics();

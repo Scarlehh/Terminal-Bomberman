@@ -11,7 +11,7 @@ struct Man* new_man(int r, int c, struct Board* board) {
 	// Set movement to nothing
 	this->dR = 0;
 	this->dC = 0;
-	
+
 	this->display = 'M';
 	this->hasBomb = 0;
 	this->isDead = 0;
