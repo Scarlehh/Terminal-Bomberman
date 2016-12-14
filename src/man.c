@@ -24,6 +24,7 @@ struct Man* new_man(int r, int c, struct Board* board, short colour) {
 	sq->display = this->display;
 	sq->data = this;
 
+	clear_sides(board, r, c);
 	return this;
 }
 
