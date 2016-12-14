@@ -5,11 +5,11 @@
 #include "man.h"
 #include "physics.h"
 
-enum COLOUR_PAIRS { PLAYER_ONE=1, PLAYER_TWO, FLAMES };
+#define WIDTH 21
+#define HEIGHT 21
+#define DELAY 100
 
-const int WIDTH = 21;
-const int HEIGHT = 21;
-const int DELAY = 100;
+enum COLOUR_PAIRS { PLAYER_ONE=1, PLAYER_TWO, FLAMES };
 
 void init();
 void end();
