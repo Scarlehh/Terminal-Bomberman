@@ -3,11 +3,10 @@
 
 #include "physics.h"
 
-#define BOMB_STRENGTH_START 3
-#define BOMB_TIMER_START 0 * TICKS_PER_SECOND
-#define BOMB_TIMER_END 3 * TICKS_PER_SECOND
-
-#define BOMB_DISPLAY '@'
+const int BOMB_STRENGTH_START = 3;
+const int BOMB_TIMER_START = 0 * TICKS_PER_SECOND;
+const int BOMB_TIMER_END = 3 * TICKS_PER_SECOND;
+const char BOMB_DISPLAY = '@';
 
 struct Bomb {
 	int strength;

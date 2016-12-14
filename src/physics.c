@@ -126,6 +126,7 @@ void * physics_loop(void * arg) {
 								break;
 							}
 						}
+						free_bomb(bomb);
 					} else {
 						bomb->timer++;
 					}
