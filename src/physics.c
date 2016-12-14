@@ -153,6 +153,7 @@ void * physics_loop(void * arg) {
 
 						// Redraw man
 						struct Square* new_sq = get_square(board, newr, newc);
+						enum SquareType oldType = new_sq->type;
 						new_sq->type = PLAYER;
 						new_sq->display = man->display;
 						new_sq->data = man;
@@ -160,6 +161,11 @@ void * physics_loop(void * arg) {
 						// Update man's position + movement
 						man->r = newr;
 						man->c = newc;
+
+						if(oldType == MELTING) {
+							kill_man(new_sq->data, board);
+							new_sq->data = 0;
+						}
 					}
 					man->dR = 0;
 					man->dC = 0;
