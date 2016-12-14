@@ -5,6 +5,8 @@
 #include "man.h"
 #include "physics.h"
 
+enum COLOUR_PAIRS { PLAYER_ONE=1, PLAYER_TWO, FLAMES };
+
 const int WIDTH = 21;
 const int HEIGHT = 21;
 const int DELAY = 100;
@@ -13,6 +15,7 @@ void init();
 void end();
 WINDOW *create_window(int height, int width, int starty, int startx, bool borders);
 void destroy_window(WINDOW *local_win);
+void init_colours();
 
 int main() {
 	struct Board* board = new_board(HEIGHT, WIDTH);
@@ -25,10 +28,10 @@ int main() {
 	WINDOW* window = create_window(HEIGHT+2, WIDTH+2, 0, 0, 1);
 	timeout(DELAY);
 
-	struct Man* p1 = new_man(0, WIDTH-1, board);
-	struct Man* p2 = new_man(0, 0, board);
-	init_pair(1, COLOR_RED, COLOR_RED);
-	init_pair(2, COLOR_GREEN, COLOR_BLACK);
+	init_colours();
+
+	struct Man* p1 = new_man(0, WIDTH-1, board, PLAYER_ONE);
+	struct Man* p2 = new_man(0, 0, board, PLAYER_TWO);
 
 	int ch = '\0';
 	struct Square* sq = NULL;
@@ -73,16 +76,18 @@ int main() {
 				sq = get_square(board, r, c);
 				char display = sq->display;
 				if(sq->type == MELTING) {
-					wattron(window, COLOR_PAIR(1));
+					wattron(window, COLOR_PAIR(FLAMES));
 				} else if(sq->type == PLAYER) {
-					wattron(window, COLOR_PAIR(2));
+					struct Man* man = sq->data;
+					wattron(window, COLOR_PAIR(man->colour));
 				}
 				// Put into window
 				mvwaddch(window, r+1, c+1, display);
 				if(sq->type == MELTING) {
-					wattroff(window, COLOR_PAIR(1));
+					wattroff(window, COLOR_PAIR(FLAMES));
 				} else if(sq->type == PLAYER) {
-					wattroff(window, COLOR_PAIR(2));
+					struct Man* man = sq->data;
+					wattroff(window, COLOR_PAIR(man->colour));
 				}
 			}
 		}
@@ -106,7 +111,7 @@ void init() {
 	cbreak(); // Pass characters with generating signals
 	noecho(); // Don't echo characters
 	keypad(stdscr, TRUE); // Enable keypad function/arrow keys
-	start_color();	
+	start_color();
 }
 
 void end() {
@@ -125,8 +130,14 @@ WINDOW *create_window(int height, int width, int starty, int startx, bool border
 	return local_win;
 }
 
-void destroy_window(WINDOW *local_win) {	
+void destroy_window(WINDOW *local_win) {
 	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	wrefresh(local_win);
 	delwin(local_win);
+}
+
+void init_colours() {
+	init_pair(FLAMES, COLOR_RED, COLOR_RED);
+	init_pair(PLAYER_ONE, COLOR_GREEN, COLOR_BLACK);
+	init_pair(PLAYER_TWO, COLOR_CYAN, COLOR_BLACK);
 }
