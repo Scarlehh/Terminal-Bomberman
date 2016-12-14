@@ -7,6 +7,7 @@
 
 int valid_move(struct Board * board, struct Man * man);
 int explode_bomb(struct Square* sq, struct Board* board);
+void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb);
 void * physics_loop(void * arg);
 
 pthread_t last_started;
@@ -49,7 +50,7 @@ int valid_move(struct Board * board, struct Man * man) {
 
 	return 0;
 }
-
+// Returns 1 if hits an obstacle
 int explode_bomb(struct Square* sq, struct Board* board) {
 	enum SquareType type = sq->type;
 	if (type == BLOCK) {
@@ -63,31 +64,41 @@ int explode_bomb(struct Square* sq, struct Board* board) {
 	else if (type == PLAYER) {
 		kill_man(sq->data, board);
 		sq->data = 0;
+	} else if (type == BOMB) {
+		detonate_bomb(board, sq->r, sq->c, sq->data);
+		return 1;
+	} else if (type == MELTING) {
+		sq->data = 0;
 	}
 	return 0;
 }
 
 void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb) {
-	for (int dR = 0; dR < bomb->strength && r + dR < board->width; dR++) {
-		if(explode_bomb(get_square(board, r + dR, c), board)) {
+	struct Square* sq = get_square(board, r, c);
+	sq->display = ' ';
+	sq->type = MELTING;
+	sq->data = NULL;
+	// Flames going up
+	for(int st = 1; st <= bomb->strength && r-st >= 0; st++) {
+		if(explode_bomb(get_square(board, r-st, c), board)) {
 			break;
 		}
 	}
-
-	for (int dR = 1; dR < bomb->strength && r - dR >= 0; dR++) {
-		if(explode_bomb(get_square(board, r - dR, c), board)) {
+	// Flames going down
+	for(int st = 1; st <= bomb->strength && r+st < board->height; st++) {
+		if(explode_bomb(get_square(board, r+st, c), board)) {
 			break;
 		}
 	}
-
-	for (int dC = 0; dC < bomb->strength && c + dC < board->height; dC++) {
-		if(explode_bomb(get_square(board, r, c + dC), board)) {
+	// Flames going left
+	for(int st = 1; st <= bomb->strength && c-st >= 0; st++) {
+		if(explode_bomb(get_square(board, r, c-st), board)) {
 			break;
 		}
 	}
-
-	for (int dC = 1; dC < bomb->strength && c - dC >= 0; dC++) {
-		if(explode_bomb(get_square(board, r, c - dC), board)) {
+	// Flames going right
+	for(int st = 1; st <= bomb->strength && c+st < board->width; st++) {
+		if(explode_bomb(get_square(board, r, c+st), board)) {
 			break;
 		}
 	}
