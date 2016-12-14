@@ -14,7 +14,7 @@ struct Man {
 };
 
 struct Man* new_man(int r, int c, struct Board* board, short colour);
-void delete_man(struct Man* this);
+void delete_man(struct Man* this, struct Board* board);
 void man_up(struct Man* this);
 void man_down(struct Man* this);
 void man_left(struct Man* this);

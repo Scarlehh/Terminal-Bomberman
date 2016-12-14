@@ -28,7 +28,12 @@ struct Man* new_man(int r, int c, struct Board* board, short colour) {
 	return this;
 }
 
-void delete_man(struct Man* this) {
+void delete_man(struct Man* this, struct Board* board) {
+	struct Square* sq = get_square(board, this->r, this->c);
+	sq->type = EMPTY;
+	sq->display = ' ';
+	sq->data = NULL;
+
 	free(this);
 }
 
