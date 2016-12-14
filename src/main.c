@@ -80,6 +80,8 @@ int main() {
 				} else if(sq->type == PLAYER) {
 					struct Man* man = sq->data;
 					wattron(window, COLOR_PAIR(man->colour));
+				} else if(sq->type == BLOCK) {
+					wattron(window, WA_BOLD);
 				}
 				// Put into window
 				mvwaddch(window, r+1, c+1, display);
@@ -88,6 +90,8 @@ int main() {
 				} else if(sq->type == PLAYER) {
 					struct Man* man = sq->data;
 					wattroff(window, COLOR_PAIR(man->colour));
+				} else if(sq->type == BLOCK) {
+					wattroff(window, WA_BOLD);
 				}
 			}
 		}
