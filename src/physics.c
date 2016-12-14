@@ -67,6 +67,33 @@ int explode_bomb(struct Square* sq, struct Board* board) {
 	return 0;
 }
 
+void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb) {
+	for (int dR = 0; dR < bomb->strength && r + dR < board->width; dR++) {
+		if(explode_bomb(get_square(board, r + dR, c), board)) {
+			break;
+		}
+	}
+
+	for (int dR = 1; dR < bomb->strength && r - dR >= 0; dR++) {
+		if(explode_bomb(get_square(board, r - dR, c), board)) {
+			break;
+		}
+	}
+
+	for (int dC = 0; dC < bomb->strength && c + dC < board->height; dC++) {
+		if(explode_bomb(get_square(board, r, c + dC), board)) {
+			break;
+		}
+	}
+
+	for (int dC = 1; dC < bomb->strength && c - dC >= 0; dC++) {
+		if(explode_bomb(get_square(board, r, c - dC), board)) {
+			break;
+		}
+	}
+	free_bomb(bomb);
+}
+
 void * physics_loop(void * arg) {
 	struct Board * board = arg;
 	struct timespec t;
@@ -102,31 +129,7 @@ void * physics_loop(void * arg) {
 					; // for fuck's sake C
 					struct Bomb * bomb = sq->data;
 					if (bomb->timer >= BOMB_TIMER_END) {
-						struct Square * sq1;
-						for (int dR = 0; dR < bomb->strength && r + dR < board->width; dR++) {
-							if(explode_bomb(get_square(board, r + dR, c), board)) {
-								break;
-							}
-						}
-
-						for (int dR = 1; dR < bomb->strength && r - dR >= 0; dR++) {
-							if(explode_bomb(get_square(board, r - dR, c), board)) {
-								break;
-							}
-						}
-
-						for (int dC = 0; dC < bomb->strength && c + dC < board->height; dC++) {
-							if(explode_bomb(get_square(board, r, c + dC), board)) {
-								break;
-							}
-						}
-
-						for (int dC = 1; dC < bomb->strength && c - dC >= 0; dC++) {
-							if(explode_bomb(get_square(board, r, c - dC), board)) {
-								break;
-							}
-						}
-						free_bomb(bomb);
+						detonate_bomb(board, r, c, bomb);
 					} else {
 						bomb->timer++;
 					}
