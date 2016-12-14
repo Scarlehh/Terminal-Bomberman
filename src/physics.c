@@ -5,6 +5,8 @@
 #include "man.h"
 #include "board.h"
 
+int valid_move(struct Board * board, struct Man * man);
+int explode_bomb(struct Square* sq, struct Board* board);
 void * physics_loop(void * arg);
 
 pthread_t last_started;
@@ -48,6 +50,23 @@ int valid_move(struct Board * board, struct Man * man) {
 	return 0;
 }
 
+int explode_bomb(struct Square* sq, struct Board* board) {
+	enum SquareType type = sq->type;
+	if (type == BLOCK) {
+		return 1;
+	}
+	sq->type = MELTING;
+	if (type == BREAKABLE){
+		sq->data = 0;
+		return 1;
+	}
+	else if (type == PLAYER) {
+		kill_man(sq->data, board);
+		sq->data = 0;
+	}
+	return 0;
+}
+
 void * physics_loop(void * arg) {
 	struct Board * board = arg;
 	struct timespec t;
@@ -85,58 +104,26 @@ void * physics_loop(void * arg) {
 					if (bomb->timer >= BOMB_TIMER_END) {
 						struct Square * sq1;
 						for (int dR = 0; dR < bomb->strength && r + dR < board->width; dR++) {
-							sq1 = get_square(board, r + dR, c);
-							enum SquareType type = sq1-> type;
-							sq1->type = MELTING;
-							if (type == BREAKABLE){
-								sq1->data = 0;
+							if(explode_bomb(get_square(board, r + dR, c), board)) {
 								break;
-							}
-							else if (type == PLAYER) {
-								kill_man(sq1->data, board);
-								sq1->data = 0;
 							}
 						}
 
 						for (int dR = 1; dR < bomb->strength && r - dR >= 0; dR++) {
-							sq1 = get_square(board, r - dR, c);
-							enum SquareType type = sq1-> type;
-							sq1->type = MELTING;
-							if (type == BREAKABLE){
-								sq1->data = 0;
+							if(explode_bomb(get_square(board, r - dR, c), board)) {
 								break;
-							}
-							else if (type == PLAYER) {
-								kill_man(sq1->data, board);
-								sq1->data = 0;
 							}
 						}
 
 						for (int dC = 0; dC < bomb->strength && c + dC < board->height; dC++) {
-							sq1 = get_square(board, r, c + dC);
-							enum SquareType type = sq1-> type;
-							sq1->type = MELTING;
-							if (type == BREAKABLE){
-								sq1->data = 0;
+							if(explode_bomb(get_square(board, r, c + dC), board)) {
 								break;
-							}
-							else if (type == PLAYER) {
-								kill_man(sq1->data, board);
-								sq1->data = 0;
 							}
 						}
 
 						for (int dC = 1; dC < bomb->strength && c - dC >= 0; dC++) {
-							sq1 = get_square(board, r, c - dC);
-							enum SquareType type = sq1-> type;
-							sq1->type = MELTING;
-							if (type == BREAKABLE){
-								sq1->data = 0;
+							if(explode_bomb(get_square(board, r, c - dC), board)) {
 								break;
-							}
-							else if (type == PLAYER) {
-								kill_man(sq1->data, board);
-								sq1->data = 0;
 							}
 						}
 					} else {
