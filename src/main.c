@@ -100,8 +100,8 @@ int main() {
 		wrefresh(window);
 	} while((ch = getch()) != 'q');
 
-	delete_man(p1);
-	delete_man(p2);
+	delete_man(p1, board);
+	delete_man(p2, board);
 
 	destroy_window(window);
 	endwin();
