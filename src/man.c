@@ -3,7 +3,7 @@
 #include "bomb.h"
 #include <stdlib.h>
 
-struct Man* new_man(int r, int c, struct Board* board) {
+struct Man* new_man(int r, int c, struct Board* board, short colour) {
 	struct Man* this = malloc(sizeof(struct Man));
 	// Initialise position
 	this->r = r;
@@ -11,6 +11,7 @@ struct Man* new_man(int r, int c, struct Board* board) {
 	// Set movement to nothing
 	this->dR = 0;
 	this->dC = 0;
+	this->colour = colour;
 
 	this->display = 'M';
 	this->hasBomb = 0;

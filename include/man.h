@@ -10,9 +10,10 @@ struct Man {
 	int hasBomb, isDead;
 	struct Bomb bomb;
 	char display;
+	short colour;
 };
 
-struct Man* new_man(int r, int c, struct Board* board);
+struct Man* new_man(int r, int c, struct Board* board, short colour);
 void delete_man(struct Man* this);
 void man_up(struct Man* this);
 void man_down(struct Man* this);
