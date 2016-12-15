@@ -67,6 +67,7 @@ int valid_move(struct Board * board, struct Man * man) {
 
 	return 0;
 }
+
 // Returns 1 if hits an obstacle
 int explode_bomb(struct Square* sq, struct Board* board) {
 	enum SquareType type = sq->type;
@@ -149,15 +150,17 @@ void * physics_loop(void * arg) {
 		for (int r = 0; r < height; r++) {
 			for (int c = 0; c < width; c++) {
 				sq = get_square(board, r, c);
+				// If square is on fire
 				if (sq->type == MELTING) {
-					struct Timer* timer = sq->data;
-					if ((long) timer->timer >= MELT_TIMER) {
+					struct Timer* flameTimer = sq->data;
+					// Set square to empty
+					if ((long) flameTimer->timer >= MELT_TIMER) {
 						sq->type = EMPTY;
 						sq->display = ' ';
 						delete_timer(sq->data);
 						sq->data = NULL;
 					} else {
-						timer->timer++;
+						flameTimer->timer++;
 					}
 				}
 			}
