@@ -15,7 +15,7 @@ struct Man* new_man(int r, int c, struct Board* board, short colour) {
 	this->capacity = 1;
 	this->dropped = 0;
 
-	this->display = 'M';
+	this->display = MAN_DISPLAY;
 	this->hasBomb = 0;
 	this->isDead = 0;
 	init_bomb(&this->bomb, this);
@@ -76,5 +76,5 @@ int can_drop_bomb(struct Man* this) {
 void kill_man(struct Man* this, struct Board* board) {
 	this->isDead = 1;
 	struct Square* sq = get_square(board, this->r, this->c);
-	sq->display = 'X';
+	sq->display = DEAD_DISPLAY;
 }

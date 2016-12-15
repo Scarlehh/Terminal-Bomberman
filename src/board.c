@@ -72,11 +72,11 @@ void generate_walls(struct Board* board) {
 			// Leave perimeter open
 			if((r+1)%2==0 && (c+1)%2 == 0) {
 				sq->type = BLOCK;
-				sq->display = '#';
+				sq->display = BLOCK_DISPLAY;
 			}
 			else if(rand()%3 < 1) {
 				sq->type = BREAKABLE;
-				sq->display = '#';
+				sq->display = BLOCK_DISPLAY;
 			}
 		}
 	}
