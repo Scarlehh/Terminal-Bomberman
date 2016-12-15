@@ -151,7 +151,7 @@ void * physics_loop(void * arg) {
 
 					// validate movement
 					if (valid_move(board, man)) {
-						if (man->hasBomb) {
+						if(can_drop_bomb(man)) {
 							sq->data = clone_bomb(&man->bomb);
 							sq->display = BOMB_DISPLAY;
 							sq->type = BOMB;
