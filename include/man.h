@@ -4,6 +4,9 @@
 #include "board.h"
 #include "bomb.h"
 
+#define MAN_DISPLAY 'M'
+#define DEAD_DISPLAY 'X'
+
 struct Man {
 	int r, c;
 	int dR, dC;
