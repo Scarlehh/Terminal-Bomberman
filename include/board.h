@@ -19,6 +19,7 @@ struct Board {
 };
 
 struct Board * new_board(int width, int height);
+void delete_board(struct Board* this);
 void clear_board(struct Board * board);
 void generate_walls(struct Board* board);
 void clear_sides(struct Board* board, int r, int c);

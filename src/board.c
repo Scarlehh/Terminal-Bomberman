@@ -20,6 +20,11 @@ struct Board * new_board(int height, int width) {
 	return board;
 }
 
+void delete_board(struct Board* this) {
+	free(this->board);
+	free(this);
+}
+
 void clear_board(struct Board * board) {
 	for (int r = 0; r < board->height; r++) {
 		for (int c = 0; c < board->width; c++) {
