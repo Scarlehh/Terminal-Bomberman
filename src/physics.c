@@ -1,5 +1,6 @@
 #include <pthread.h>
 
+#include <stdlib.h>
 #include "physics.h"
 #include "bomb.h"
 #include "man.h"
@@ -11,6 +12,17 @@ void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb);
 void * physics_loop(void * arg);
 
 pthread_t last_started;
+
+struct Timer* init_timer(struct Square* nextSquare) {
+	struct Timer* timer = malloc(sizeof(struct Timer));
+	timer->timer = 0;
+	timer->nextSquare = nextSquare;
+	return timer;
+}
+
+void delete_timer(struct Timer* timer) {
+	free(timer);
+}
 
 int start_physics(struct Board * board) {
 	return pthread_create(&last_started, NULL, physics_loop, board);
@@ -58,22 +70,34 @@ int valid_move(struct Board * board, struct Man * man) {
 // Returns 1 if hits an obstacle
 int explode_bomb(struct Square* sq, struct Board* board) {
 	enum SquareType type = sq->type;
+
+	// If block, stop flames
 	if (type == BLOCK) {
 		return 1;
-	}
-	sq->type = MELTING;
-	if (type == BREAKABLE){
-		sq->data = 0;
-		return 1;
-	}
-	else if (type == PLAYER) {
-		kill_man(sq->data, board);
-		sq->data = 0;
+
+	// If bomb, detonate and stop flames
 	} else if (type == BOMB) {
 		detonate_bomb(board, sq->r, sq->c, sq->data);
 		return 1;
-	} else if (type == MELTING) {
-		sq->data = 0;
+	}
+
+	// If bombs flames overlap
+	else if(type == MELTING) {
+		struct Timer* timer = sq->data;
+		timer->timer = 0;
+		return 0;
+	}
+	sq->type = MELTING;
+	sq->data = init_timer(NULL);
+
+	// If breakable, stop flames
+	if (type == BREAKABLE){
+		return 1;
+	}
+
+	// If player, kill
+	else if (type == PLAYER) {
+		kill_man(sq->data, board);
 	}
 	return 0;
 }
@@ -82,7 +106,6 @@ void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb) {
 	struct Square* sq = get_square(board, r, c);
 	sq->display = ' ';
 	sq->type = MELTING;
-	sq->data = NULL;
 	// Flames going up
 	for(int st = 1; st <= bomb->strength && r-st >= 0; st++) {
 		if(explode_bomb(get_square(board, r-st, c), board)) {
@@ -107,6 +130,7 @@ void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb) {
 			break;
 		}
 	}
+	sq->data = init_timer(NULL);
 	free_bomb(bomb);
 }
 
@@ -126,12 +150,14 @@ void * physics_loop(void * arg) {
 			for (int c = 0; c < width; c++) {
 				sq = get_square(board, r, c);
 				if (sq->type == MELTING) {
-					if ((long) sq->data >= MELT_TIMER) {
+					struct Timer* timer = sq->data;
+					if ((long) timer->timer >= MELT_TIMER) {
 						sq->type = EMPTY;
 						sq->display = ' ';
+						delete_timer(sq->data);
 						sq->data = NULL;
 					} else {
-						sq->data++;
+						timer->timer++;
 					}
 				}
 			}
@@ -184,7 +210,7 @@ void * physics_loop(void * arg) {
 
 						if(oldType == MELTING) {
 							kill_man(new_sq->data, board);
-							new_sq->data = 0;
+							new_sq->data = init_timer(NULL);
 						}
 					}
 					man->dR = 0;
