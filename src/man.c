@@ -76,6 +76,5 @@ int can_drop_bomb(struct Man* this) {
 void kill_man(struct Man* this, struct Board* board) {
 	this->isDead = 1;
 	struct Square* sq = get_square(board, this->r, this->c);
-	sq->type = EMPTY;
 	sq->display = 'X';
 }
