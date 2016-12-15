@@ -12,11 +12,13 @@ struct Man* new_man(int r, int c, struct Board* board, short colour) {
 	this->dR = 0;
 	this->dC = 0;
 	this->colour = colour;
+	this->capacity = 1;
+	this->dropped = 0;
 
 	this->display = 'M';
 	this->hasBomb = 0;
 	this->isDead = 0;
-	init_bomb(&this->bomb);
+	init_bomb(&this->bomb, this);
 
 	// Set attributes on square
 	struct Square* sq = get_square(board, r, c);
@@ -54,7 +56,17 @@ void man_right(struct Man* this) {
 }
 
 void get_bomb(struct Man* this) {
-	this->hasBomb = 1;
+	if(this->dropped != this->capacity) {
+		this->hasBomb = 1;
+	}
+}
+
+int can_drop_bomb(struct Man* this) {
+	if(this->hasBomb && this->dropped != this->capacity) {
+		this->dropped++;
+		return 1;
+	}
+	return 0;
 }
 
 void kill_man(struct Man* this, struct Board* board) {

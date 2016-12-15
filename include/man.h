@@ -11,6 +11,7 @@ struct Man {
 	struct Bomb bomb;
 	char display;
 	short colour;
+	short capacity, dropped;
 };
 
 struct Man* new_man(int r, int c, struct Board* board, short colour);
@@ -20,6 +21,7 @@ void man_down(struct Man* this);
 void man_left(struct Man* this);
 void man_right(struct Man* this);
 void get_bomb(struct Man* this);
+int can_drop_bomb(struct Man* this);
 void kill_man(struct Man* this, struct Board* board);
 
 #endif
