@@ -35,6 +35,11 @@ int valid_move(struct Board * board, struct Man * man) {
 	if(man->dR != 0 && man->dC != 0) {
 		return 0;
 	}
+	// Moving too much
+	if(man->dR > 1 || man->dR < -1 ||
+	   man->dC > 1 || man->dC < -1) {
+		return 0;
+	}
 	int newr = man->r + man->dR;
 	int newc = man->c + man->dC;
 	if(newr < 0 || newc < 0 || newr >= board->height

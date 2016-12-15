@@ -40,19 +40,23 @@ void delete_man(struct Man* this, struct Board* board) {
 }
 
 void man_up(struct Man* this) {
-	this->dR--;
+	this->dC=0;
+	this->dR=-1;
 }
 
 void man_down(struct Man* this) {
-	this->dR++;
+	this->dC=0;
+	this->dR=1;
 }
 
 void man_left(struct Man* this) {
-	this->dC--;
+	this->dR=0;
+	this->dC=-1;
 }
 
 void man_right(struct Man* this) {
-	this->dC++;
+	this->dR=0;
+	this->dC=1;
 }
 
 void get_bomb(struct Man* this) {
