@@ -107,6 +107,7 @@ int main() {
 	endwin();
 	stop_physics();
 	clear_board(board);
+	delete_board(board);
 	return 0;
 }
 
