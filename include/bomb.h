@@ -11,10 +11,11 @@
 struct Bomb {
 	int strength;
 	int timer;
+	struct Man* owner;
 };
 
-void init_bomb(struct Bomb *);
-struct Bomb * clone_bomb(struct Bomb *);
-void free_bomb(struct Bomb *);
+void init_bomb(struct Bomb* bomb, struct Man* owner);
+struct Bomb* clone_bomb(struct Bomb* toClone);
+void free_bomb(struct Bomb* bomb);
 
 #endif
