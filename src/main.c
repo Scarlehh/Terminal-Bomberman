@@ -141,7 +141,7 @@ void destroy_window(WINDOW *local_win) {
 }
 
 void init_colours() {
-	init_pair(FLAMES, COLOR_RED, COLOR_RED);
+	init_pair(FLAMES, COLOR_YELLOW, COLOR_RED);
 	init_pair(PLAYER_ONE, COLOR_GREEN, COLOR_BLACK);
 	init_pair(PLAYER_TWO, COLOR_CYAN, COLOR_BLACK);
 }
