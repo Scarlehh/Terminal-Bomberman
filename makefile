@@ -12,7 +12,11 @@ LIBS = include/
 SRC = src/
 
 # Header files
-_DEPS=
+_DEPS=\
+	man.h \
+	board.h \
+	bomb.h \
+	physics.h
 DEPS = $(patsubst %,$(LIBS)%,$(_DEPS))
 
 # Object Files
@@ -29,7 +33,7 @@ MAIN = main
 default: mkdir $(OBJ)
 	$(CC) $(OBJ) -o $(addprefix $(BIN),$(MAIN)) $(CFLAGS)
 
-$(BUILD)%.o: $(SRC)%.c
+$(BUILD)%.o: $(SRC)%.c $(DEPS)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 run:
@@ -38,6 +42,8 @@ run:
 mkdir:
 	$(MKBIN)
 	$(MKBUILD)
+
+.PHONY: clean
 
 clean:
 	$(RM) -r $(BUILD)
