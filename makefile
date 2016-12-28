@@ -11,14 +11,6 @@ BUILD = build/
 LIBS = include/
 SRC = src/
 
-# Header files
-_DEPS=\
-	man.h \
-	board.h \
-	bomb.h \
-	physics.h
-DEPS = $(patsubst %,$(LIBS)%,$(_DEPS))
-
 # Object Files
 _OBJ=\
 	main.o \
@@ -33,7 +25,7 @@ MAIN = main
 default: mkdir $(OBJ)
 	$(CC) $(OBJ) -o $(addprefix $(BIN),$(MAIN)) $(CFLAGS)
 
-$(BUILD)%.o: $(SRC)%.c $(DEPS)
+$(BUILD)%.o: $(SRC)%.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 run:
