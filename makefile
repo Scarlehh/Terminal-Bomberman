@@ -24,7 +24,8 @@ DEPS = $(OBJ:.o=.d)
 
 MAIN = main
 
-default:  mkdir $(OBJ)
+.PHONY: default
+default: mkdir $(OBJ)
 	$(CC) $(OBJ) -o $(addprefix $(BIN),$(MAIN)) $(CFLAGS)
 
 -include $(DEPS)
@@ -33,15 +34,16 @@ $(BUILD)%.o: $(SRC)%.c
 	$(CC) -c $< -MMD -MF $(patsubst %.o,%.d,$@) -o $@ $(CFLAGS)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
+.PHONY: run
 run:
 	./$(BIN)$(MAIN)
 
+.PHONY: mkdir
 mkdir:
 	$(MKBIN)
 	$(MKBUILD)
 
 .PHONY: clean
-
-clean:
+clean: $(SRC)main.c
 	$(RM) -r $(BUILD)
 	$(RM) -r *~
