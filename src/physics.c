@@ -83,12 +83,17 @@ int explode_bomb(struct Square* sq, struct Board* board) {
 	}
 
 	// If bombs flames overlap
-	else if(type == MELTING) {
+	else if(type == MELTING || type == MELTING_OBJ) {
 		struct Timer* timer = sq->data;
 		timer->timer = 0;
 		return 0;
 	}
-	sq->type = MELTING;
+
+	if(sq->type == BREAKABLE) {
+		sq->type = MELTING_OBJ;
+	} else {
+		sq->type = MELTING;
+	}
 	sq->data = init_timer(NULL);
 
 	// If breakable, stop flames
@@ -151,7 +156,7 @@ void * physics_loop(void * arg) {
 			for (int c = 0; c < width; c++) {
 				sq = get_square(board, r, c);
 				// If square is on fire
-				if (sq->type == MELTING) {
+				if (sq->type == MELTING || sq->type == MELTING_OBJ) {
 					struct Timer* flameTimer = sq->data;
 					// Set square to empty
 					if ((long) flameTimer->timer >= MELT_TIMER) {
