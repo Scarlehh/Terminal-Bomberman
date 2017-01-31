@@ -25,6 +25,6 @@ void man_left(struct Man* this);
 void man_right(struct Man* this);
 void get_bomb(struct Man* this);
 int can_drop_bomb(struct Man* this);
-void kill_man(struct Man* this, struct Board* board);
+void kill_man(struct Man* this);
 
 #endif

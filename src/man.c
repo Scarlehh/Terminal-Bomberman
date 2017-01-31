@@ -73,8 +73,7 @@ int can_drop_bomb(struct Man* this) {
 	return 0;
 }
 
-void kill_man(struct Man* this, struct Board* board) {
+void kill_man(struct Man* this) {
 	this->isDead = 1;
-	struct Square* sq = get_square(board, this->r, this->c);
-	sq->display = DEAD_DISPLAY;
+	this->display = DEAD_DISPLAY;
 }
