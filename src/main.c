@@ -75,7 +75,7 @@ int main() {
 				// Get board square
 				sq = get_square(board, r, c);
 				char display = sq->display;
-				if(sq->type == MELTING) {
+				if(sq->type == MELTING || sq->type == MELTING_OBJ) {
 					wattron(window, COLOR_PAIR(FLAMES));
 				} else if(sq->type == PLAYER) {
 					struct Man* man = sq->data;
@@ -85,7 +85,7 @@ int main() {
 				}
 				// Put into window
 				mvwaddch(window, r+1, c+1, display);
-				if(sq->type == MELTING) {
+				if(sq->type == MELTING || sq->type == MELTING_OBJ) {
 					wattroff(window, COLOR_PAIR(FLAMES));
 				} else if(sq->type == PLAYER) {
 					struct Man* man = sq->data;
