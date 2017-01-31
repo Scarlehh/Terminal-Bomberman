@@ -88,7 +88,13 @@ int explode_bomb(struct Square* sq, struct Board* board) {
 		return 0;
 	}
 
-	if(sq->type == BREAKABLE) {
+	// If player, kill
+	if (type == PLAYER) {
+		struct Man* man = sq->data;
+		sq->type = MELTING_OBJ;
+		kill_man(man);
+		sq->display = man->display;
+	} else if(sq->type == BREAKABLE) {
 		sq->type = MELTING_OBJ;
 	} else {
 		sq->type = MELTING;
@@ -98,11 +104,6 @@ int explode_bomb(struct Square* sq, struct Board* board) {
 	// If breakable, stop flames
 	if (type == BREAKABLE){
 		return 1;
-	}
-
-	// If player, kill
-	else if (type == PLAYER) {
-		kill_man(sq->data, board);
 	}
 	return 0;
 }
@@ -204,21 +205,22 @@ void * physics_loop(void * arg) {
 						int newr = man->r + man->dR;
 						int newc = man->c + man->dC;
 
-						// Redraw man
-						struct Square* new_sq = get_square(board, newr, newc);
-						enum SquareType oldType = new_sq->type;
-						new_sq->type = PLAYER;
-						new_sq->display = man->display;
-						new_sq->data = man;
-
 						// Update man's position + movement
 						man->r = newr;
 						man->c = newc;
 
+						// Redraw man
+						struct Square* new_sq = get_square(board, newr, newc);
+						enum SquareType oldType = new_sq->type;
+
 						if(oldType == MELTING) {
-							kill_man(new_sq->data, board);
-							new_sq->data = init_timer();
+							new_sq->type = MELTING_OBJ;
+							kill_man(man);
+						} else {
+							new_sq->type = PLAYER;
+							new_sq->data = man;
 						}
+						new_sq->display = man->display;
 					}
 					man->dR = 0;
 					man->dC = 0;
