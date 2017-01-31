@@ -13,10 +13,9 @@ void * physics_loop(void * arg);
 
 pthread_t last_started;
 
-struct Timer* init_timer(struct Square* nextSquare) {
+struct Timer* init_timer() {
 	struct Timer* timer = malloc(sizeof(struct Timer));
 	timer->timer = 0;
-	timer->nextSquare = nextSquare;
 	return timer;
 }
 
@@ -94,7 +93,7 @@ int explode_bomb(struct Square* sq, struct Board* board) {
 	} else {
 		sq->type = MELTING;
 	}
-	sq->data = init_timer(NULL);
+	sq->data = init_timer();
 
 	// If breakable, stop flames
 	if (type == BREAKABLE){
@@ -136,7 +135,7 @@ void detonate_bomb(struct Board* board, int r, int c, struct Bomb* bomb) {
 			break;
 		}
 	}
-	sq->data = init_timer(NULL);
+	sq->data = init_timer();
 	free_bomb(bomb);
 }
 
@@ -218,7 +217,7 @@ void * physics_loop(void * arg) {
 
 						if(oldType == MELTING) {
 							kill_man(new_sq->data, board);
-							new_sq->data = init_timer(NULL);
+							new_sq->data = init_timer();
 						}
 					}
 					man->dR = 0;

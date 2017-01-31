@@ -10,10 +10,9 @@
 
 struct Timer {
 	int timer;
-	struct Square* nextSquare;
 };
 
-struct Timer* init_timer(struct Square* nextSquare);
+struct Timer* init_timer();
 void delete_timer(struct Timer* timer);
 int start_physics(struct Board * board);
 int stop_physics();
