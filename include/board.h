@@ -3,7 +3,7 @@
 
 #define BLOCK_DISPLAY '#';
 
-enum SquareType { BOMB, MELTING, BREAKABLE, BLOCK, PLAYER, EMPTY, POWER };
+enum SquareType { BOMB, MELTING, BREAKABLE, BLOCK, MELTING_OBJ, POWER, PLAYER, EMPTY };
 
 struct Square {
 	int r, c;
